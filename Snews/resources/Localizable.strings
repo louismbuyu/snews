@@ -1,0 +1,46 @@
+/* 
+  Localizable.strings
+  Snews
+
+  Created by Louis Nelson Levoride on 03.08.18.
+  Copyright © 2018 LouisNelson. All rights reserved.
+*/
+
+// MARK: - General variables
+"Next" = "Next";
+"Username" = "Username";
+"Settings" = "Settings";
+"Cancel" = "Cancel";
+"Users" = "Users";
+
+// MARK: - Onboarding Variables
+"SORT" = "SORT";
+"SORT_DESC" = "SORT AND FILTER ALL YOUR NEWS WITH ONE CLICK";//"Sort and filter all your news in one click.";
+"SAVE" = "SAVE";
+"SAVE_DESC" = "SAVE YOUR FAVORITE ARTICLES TO READ LATER";//"Save your favorite articles to read later.";
+"SHARE" = "SHARE";
+"SHARE_DESC" = "SHARE ARTICLES WITH OTHER USERS AND CHAT";//"Share articles with other users and chat about them.";
+"JOINSNEWS" = "JOIN SNEWS";
+"SNEWS" = "SNEWS";
+"SnewsSlogan" = "Share the news. Share the power.";
+"SnewsDescription" = "Snews is your no. 1 news companion";
+
+// MARK: - Signup and Login Variables
+"SignUp" = "Sign up";
+"LogIn" = "Log in";
+"OrSignUpWith" = "Or sign up with";
+"OrLogInWith" = "Or log in with";
+"SignUpWithFacebook" = "Sign up with Facebook";
+"LogInWithFacebook" = "Sign up with Facebook";
+"Sign up with your username" = "Sign up with your username";
+"usernameTitle" = "Select username";
+"usernameInfoTitle" = "Pick a username for your account. You can always change it later.";
+"LogInTitle" = "Log in with your username";
+"SignUpPolicy" = "By clicking, Sign up, you agree to Snews User Agreement, Privacy Policy and Cookie Policy.";
+"EmailOrUsername" = "Email or Username";
+
+//MARK: - Profile Tab
+"View Profile" = "View Profile";
+"Display Name" = "Display Name";
+"Select Profile Image" = "Select Profile Image";
+"Camera Roll" = "Camera Roll";
