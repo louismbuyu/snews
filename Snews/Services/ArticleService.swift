@@ -54,9 +54,14 @@ class ArticleService {
                                         newArticle.imageUrl = temp
                                     }
                                     
-                                    if let temp = article["createdAt"] as? String {
+                                    if let temp = article["timeStamp"] as? String {
                                         let timeStamp = customDates().mongodbStringToDate(date: temp).0
                                         newArticle.timeStamp = timeStamp
+                                    }else {
+                                        if let temp = article["createdAt"] as? String {
+                                            let timeStamp = customDates().mongodbStringToDate(date: temp).0
+                                            newArticle.timeStamp = timeStamp
+                                        }
                                     }
                                     newArticles.append(newArticle)
                                 }
