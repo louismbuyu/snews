@@ -131,9 +131,9 @@ class ChatVC: UIViewController, UITableViewDelegate, UITableViewDataSource, UITe
         
         // Keyboard stuff.
         let center: NotificationCenter = NotificationCenter.default
-        center.addObserver(self, selector: #selector(ChatVC.keyboardWillShow), name: NSNotification.Name.UIKeyboardWillShow, object: nil)
-        center.addObserver(self, selector: #selector(ChatVC.keyboardWillHide), name: NSNotification.Name.UIKeyboardWillHide, object: nil)
-        center.addObserver(self, selector: #selector(ChatVC.keyboardWillShow), name: NSNotification.Name.UIKeyboardWillChangeFrame, object: nil)
+        center.addObserver(self, selector: #selector(ChatVC.keyboardWillChange), name: NSNotification.Name.UIKeyboardWillShow, object: nil)
+        center.addObserver(self, selector: #selector(ChatVC.keyboardWillChange), name: NSNotification.Name.UIKeyboardWillHide, object: nil)
+        center.addObserver(self, selector: #selector(ChatVC.keyboardWillChange), name: NSNotification.Name.UIKeyboardWillChangeFrame, object: nil)
         
         otherUser = recentChat?.senderUser
         if recentChat?.senderUser.id == self.userId {
@@ -149,15 +149,19 @@ class ChatVC: UIViewController, UITableViewDelegate, UITableViewDataSource, UITe
         center.removeObserver(self, name: NSNotification.Name.UIKeyboardWillChangeFrame, object: nil)
     }
     
-    @objc func keyboardWillShow(notification: NSNotification) {
-        let info:NSDictionary = notification.userInfo! as NSDictionary
-        let keyboardSize = (info[UIKeyboardFrameBeginUserInfoKey] as! NSValue).cgRectValue
-        let keyboardHeight: CGFloat = keyboardSize.height
-        view.frame.origin.y = -keyboardHeight
+    @objc func keyboardWillChange(notification: NSNotification) {
+        guard let keyboardRect = (notification.userInfo?[UIKeyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue else {
+            return
+        }
+        if notification.name == Notification.Name.UIKeyboardWillShow || notification.name == Notification.Name.UIKeyboardWillChangeFrame {
+            view.frame.origin.y = -keyboardRect.height
+        }else{
+            view.frame.origin.y = 0
+        }
     }
     
-    @objc func keyboardWillHide(notification: NSNotification) {
-        view.frame.origin.y = 0
+    func hideKeyboard(){
+        inputTextView.resignFirstResponder()
     }
     
     override func viewWillAppear(_ animated: Bool) {

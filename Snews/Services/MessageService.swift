@@ -167,6 +167,7 @@ class MessageService {
                                     }
                                     
                                     if let temp = recentChat["article"] as? Dictionary<String,Any> {
+                                        print("THERE IS AN ARTICLE!!!!!")
                                         newRecentChat.article = Parsers().convertDictionaryToArticle(article: temp)
                                     }
                                     

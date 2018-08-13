@@ -83,8 +83,6 @@ class ArticleWebViewVC: UIViewController {
     var progressHUB = ProgressHUD(text: "Loading...")
     override func viewDidLoad() {
         super.viewDidLoad()
-        print("URL: \(article?.url)")
-        
         self.view.backgroundColor = UIColor.white
         
         self.view.addSubview(bottomView)
@@ -135,20 +133,16 @@ class ArticleWebViewVC: UIViewController {
         self.shareButton.widthAnchor.constraint(equalToConstant: 30).isActive = true
         self.shareButton.heightAnchor.constraint(equalToConstant: 30).isActive = true
         
-        self.view.addSubview(progressHUB)
-        progressHUB.setup()
         progressHUB.show()
         
         let url = URL(string: (article?.url)!)
         if let unwrappedURL = url {
             let request = URLRequest(url: unwrappedURL)
             let session = URLSession.shared
-            
             let task = session.dataTask(with: request){ (data,response,error) in
+                self.progressHUB.hide()
                 if error == nil{
                     DispatchQueue.main.async { // Correct
-                        self.progressHUB.hide()
-                        self.progressHUB.removeFromSuperview()
                         self.webView.loadRequest(request)
                     }
                 }else{

@@ -40,8 +40,6 @@ let URL_USER_CREATE = "\(BASE_URL)\(USER_URL)/create"
 let URL_USER_SIGNIN = "\(BASE_URL)\(USER_URL)/signin"
 let URL_USER_UPDATE = "\(BASE_URL)\(USER_URL)/update"
 let URL_USERS_SEARCH = "\(BASE_URL)\(USER_URL)/search"
-let URL_POST_RATING = "\(BASE_URL)\(USER_URL)/rating"
-let URL_GET_MY_RIDES = "\(BASE_URL)\(USER_URL)/myRides"
 
 //Article Api
 let ARTICLE_URL = "article/\(VERSION)"

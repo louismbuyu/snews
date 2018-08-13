@@ -12,6 +12,8 @@ class RecentChatsTVC: UITableViewController {
     
     var recentChats = [RecentChat]()
     var userId: String?
+    var progressHUB = ProgressHUD(text: "Loading...")
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         self.userId = AuthService.instance.userId
@@ -25,52 +27,6 @@ class RecentChatsTVC: UITableViewController {
         listenOnSocket()
     }
     
-    func getRecentChats(){
-        MessageService.instance.getRecentChats(userId: userId!) { (success, error, message, newRecentChats) in
-            if success {
-                if let newRecentChats = newRecentChats {
-                    self.recentChats = newRecentChats
-                }
-                self.tableView.reloadData()
-            }
-        }
-    }
-    
-    func listenOnSocket(){
-        SocketService.instance.socket?.on(userId!) { (dataArray, sockectEmitter) in
-            for item in dataArray {
-                print("Item: \(item)")
-            }
-            let typeInt = dataArray[0] as? Int
-            let chatRoomId = dataArray[1] as? String
-            let savedMessage = dataArray[2] as? Dictionary<String,Any>
-            let senderUser = dataArray[3] as? Dictionary<String,Any>
-            let receiverUser = dataArray[4] as? Dictionary<String,Any>
-            
-            let newRecentChat = RecentChat()
-            newRecentChat.id = chatRoomId
-            let newMessage = Parsers().convertDictionaryToMessage(jsonMessage: savedMessage!)
-            newRecentChat.text = newMessage.message
-            newRecentChat.read = newMessage.read
-            newRecentChat.timeStamp = newMessage.timeStamp
-            newRecentChat.senderUser = Parsers().convertDictionaryToUser(user: senderUser!)
-            newRecentChat.receiverUser = Parsers().convertDictionaryToUser(user: receiverUser!)
-            
-            if let i = self.recentChats.index(where: { $0.id == chatRoomId }){
-                self.recentChats.remove(at: i)
-                self.tableView.beginUpdates()
-                let indexPathDelete:IndexPath = IndexPath(row:i, section:0)
-                self.tableView.deleteRows(at: [indexPathDelete], with: .left)
-                self.tableView.endUpdates()
-            }
-            self.recentChats.insert(newRecentChat, at: 0)
-            self.tableView.beginUpdates()
-            let indexPath:IndexPath = IndexPath(row:0, section:0)
-            self.tableView.insertRows(at: [indexPath], with: .top)
-            self.tableView.endUpdates()
-        }
-    }
-
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         self.tabBarController?.tabBar.isHidden = false
@@ -135,13 +91,60 @@ class RecentChatsTVC: UITableViewController {
         return cell!
     }
     
-
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
         let nextVC = ChatVC()
         nextVC.recentChat = self.recentChats[indexPath.row]
         nextVC.hidesBottomBarWhenPushed = true
         self.navigationController?.pushViewController(nextVC, animated: true)
+    }
+    
+    func getRecentChats(){
+        progressHUB.show()
+        MessageService.instance.getRecentChats(userId: userId!) { (success, error, message, newRecentChats) in
+            self.progressHUB.hide()
+            if success {
+                if let newRecentChats = newRecentChats {
+                    self.recentChats = newRecentChats
+                }
+                self.tableView.reloadData()
+            }
+        }
+    }
+    
+    func listenOnSocket(){
+        SocketService.instance.socket?.on(userId!) { (dataArray, sockectEmitter) in
+            for item in dataArray {
+                print("Item: \(item)")
+            }
+            let typeInt = dataArray[0] as? Int
+            let chatRoomId = dataArray[1] as? String
+            let savedMessage = dataArray[2] as? Dictionary<String,Any>
+            let senderUser = dataArray[3] as? Dictionary<String,Any>
+            let receiverUser = dataArray[4] as? Dictionary<String,Any>
+            
+            let newRecentChat = RecentChat()
+            newRecentChat.id = chatRoomId
+            let newMessage = Parsers().convertDictionaryToMessage(jsonMessage: savedMessage!)
+            newRecentChat.text = newMessage.message
+            newRecentChat.read = newMessage.read
+            newRecentChat.timeStamp = newMessage.timeStamp
+            newRecentChat.senderUser = Parsers().convertDictionaryToUser(user: senderUser!)
+            newRecentChat.receiverUser = Parsers().convertDictionaryToUser(user: receiverUser!)
+            
+            if let i = self.recentChats.index(where: { $0.id == chatRoomId }){
+                self.recentChats.remove(at: i)
+                self.tableView.beginUpdates()
+                let indexPathDelete:IndexPath = IndexPath(row:i, section:0)
+                self.tableView.deleteRows(at: [indexPathDelete], with: .left)
+                self.tableView.endUpdates()
+            }
+            self.recentChats.insert(newRecentChat, at: 0)
+            self.tableView.beginUpdates()
+            let indexPath:IndexPath = IndexPath(row:0, section:0)
+            self.tableView.insertRows(at: [indexPath], with: .top)
+            self.tableView.endUpdates()
+        }
     }
 
 }
