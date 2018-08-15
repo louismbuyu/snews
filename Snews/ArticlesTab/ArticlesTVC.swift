@@ -32,19 +32,13 @@ class ArticlesTVC: UITableViewController,ShareActionProtocol {
         self.tabBarController?.tabBar.isHidden = false
         
     }
-    var progressHUB = ProgressHUD(text: "Loading...")
     override func viewDidAppear(_ animated: Bool) {
-        self.view.addSubview(progressHUB)
-        progressHUB.show()
         getArticles()
     }
     
     func getArticles(){
-        
         ArticleService.instance.getArticles { (success, error, message, articles) in
-            self.progressHUB.hide()
             if success {
-                
                 if let articles = articles {
                     self.articles = articles
                 }

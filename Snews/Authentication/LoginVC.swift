@@ -69,6 +69,8 @@ class LoginVC: UIViewController {
         return label
     }()
     
+    var progressHUB = ProgressHUD(text: NSLocalizedString("Logging in...", comment: "--"))
+    
     func setupMainView(){
         self.view.backgroundColor = UIColor.white
         
@@ -104,16 +106,33 @@ class LoginVC: UIViewController {
     }
     
     @objc func signAction(){
-        guard let username = usernameTextField.text?.lowercased() , usernameTextField.text != "" else { return }
-        guard let pass = passwordTextField.text , passwordTextField.text != "" else { return }
+        let errorAlertVC = CustomAlert()
+        errorAlertVC.modalPresentationStyle = .overFullScreen
+        errorAlertVC.modalTransitionStyle = UIModalTransitionStyle.crossDissolve
+        errorAlertVC.actionCallback = { (view) in
+            view.dismiss(animated: true, completion: nil)
+        }
+        errorAlertVC.dialogTitle = NSLocalizedString("Oops", comment: "--")
+        errorAlertVC.dialogImage = UIImage(named: "error")
+        guard let username = usernameTextField.text?.lowercased() , usernameTextField.text != "" else {
+            errorAlertVC.dialogMessage = NSLocalizedString("Please enter a username", comment: "--")
+            self.present(errorAlertVC, animated: true, completion: nil)
+            return
+        }
+        guard let pass = passwordTextField.text , passwordTextField.text != "" else {
+            errorAlertVC.dialogMessage = NSLocalizedString("Please enter a password", comment: "--")
+            self.present(errorAlertVC, animated: true, completion: nil)
+            return
+        }
         
-        //self.present(MainTabVC(), animated: true, completion: nil)
+        self.view.addSubview(progressHUB)
         AuthService.instance.loginUser(username: username, password: pass) { (success, error, message) in
+            self.progressHUB.removeFromSuperview()
             if success{
                 self.present(MainTabVC(), animated: true, completion: nil)
             }else{
-                print("Error: \(String: error?.localizedDescription)")
-                print("Message: \(String: message)")
+                errorAlertVC.dialogMessage = NSLocalizedString("Looks like an error has occured, please try again later.", comment: "--")
+                self.present(errorAlertVC, animated: true, completion: nil)
             }
         }
     }

@@ -64,6 +64,7 @@
 		877C93F2211A4C4000981173 /* Parsers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 877C93F1211A4C4000981173 /* Parsers.swift */; };
 		877C93F4211A5FD300981173 /* ArticleProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 877C93F3211A5FD300981173 /* ArticleProtocol.swift */; };
 		877C9417211A9FB200981173 /* IntroVCExtention.swift in Sources */ = {isa = PBXBuildFile; fileRef = 877C9416211A9FB200981173 /* IntroVCExtention.swift */; };
+		8790BB50212381750050313D /* CustomAlert.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8790BB4F212381750050313D /* CustomAlert.swift */; };
 		8BDFEB275A766B75C9AFB9D8 /* Pods_Snews.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EA41AA4ECB1E7E3A2F953F7B /* Pods_Snews.framework */; };
 /* End PBXBuildFile section */
 
@@ -129,6 +130,7 @@
 		877C93F1211A4C4000981173 /* Parsers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Parsers.swift; sourceTree = "<group>"; };
 		877C93F3211A5FD300981173 /* ArticleProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArticleProtocol.swift; sourceTree = "<group>"; };
 		877C9416211A9FB200981173 /* IntroVCExtention.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IntroVCExtention.swift; sourceTree = "<group>"; };
+		8790BB4F212381750050313D /* CustomAlert.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomAlert.swift; sourceTree = "<group>"; };
 		EA41AA4ECB1E7E3A2F953F7B /* Pods_Snews.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Snews.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
@@ -205,6 +207,7 @@
 				877C937F211517A300981173 /* colors.swift */,
 				877C9381211517AC00981173 /* styles.swift */,
 				877C93E5211A039500981173 /* ProgressHUD.swift */,
+				8790BB4F212381750050313D /* CustomAlert.swift */,
 				877C939721151A7A00981173 /* dimensions.swift */,
 				877C939921151ABE00981173 /* fonts.swift */,
 				877C93A92116428500981173 /* dateFormats.swift */,
@@ -441,6 +444,7 @@
 				877C93912115198200981173 /* MainTabVC.swift in Sources */,
 				877C93DC2118F25E00981173 /* EditProfileVC.swift in Sources */,
 				877C93A421157B5000981173 /* ArticlesCell.swift in Sources */,
+				8790BB50212381750050313D /* CustomAlert.swift in Sources */,
 				877C93A8211639B800981173 /* Company.swift in Sources */,
 				877C93D42118C7B500981173 /* AuthService.swift in Sources */,
 				877C93D62118C8F700981173 /* Values.swift in Sources */,

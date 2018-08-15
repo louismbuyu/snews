@@ -119,6 +119,8 @@ class SignUpVC: UIViewController, UITextFieldDelegate {
         return lbl
     }()
     
+    var progressHUB = ProgressHUD(text: NSLocalizedString("Signing up...", comment: "--"))
+    
     func setupMainView(){
         self.view.backgroundColor = UIColor.white
         self.view.addSubview(profileView)
@@ -195,8 +197,25 @@ class SignUpVC: UIViewController, UITextFieldDelegate {
     }
     
     @objc func registerAction(){
-        guard let username = usernameTextField.text , usernameTextField.text != "" else { print("Please enter an username"); return }
-        guard let pass = passwordTextField.text , passwordTextField.text != "" else { print("Please enter a password"); return }
+        let errorAlertVC = CustomAlert()
+        errorAlertVC.modalPresentationStyle = .overFullScreen
+        errorAlertVC.modalTransitionStyle = UIModalTransitionStyle.crossDissolve
+        errorAlertVC.actionCallback = { (view) in
+            view.dismiss(animated: true, completion: nil)
+        }
+        errorAlertVC.dialogTitle = NSLocalizedString("Oops", comment: "--")
+        errorAlertVC.dialogImage = UIImage(named: "error")
+        
+        guard let username = usernameTextField.text , usernameTextField.text != "" else {
+            errorAlertVC.dialogMessage = NSLocalizedString("Please enter a username", comment: "--")
+            self.present(errorAlertVC, animated: true, completion: nil)
+            return
+        }
+        guard let pass = passwordTextField.text , passwordTextField.text != "" else {
+            errorAlertVC.dialogMessage = NSLocalizedString("Please enter a password", comment: "--")
+            self.present(errorAlertVC, animated: true, completion: nil)
+            return
+        }
         
         let lowercaseStr = usernameTextField.text?.lowercased()
         let firstChar = lowercaseStr?.first
@@ -220,14 +239,15 @@ class SignUpVC: UIViewController, UITextFieldDelegate {
         }else{
             self.profileView.backgroundColor = lightPurple
         }
-        
+        self.view.addSubview(progressHUB)
         let profileImage = UIImage().renderUIViewToImage(self.profileView)
         AuthService.instance.registerUser(username: username, password: pass, image: profileImage) { (success, error, message) in
+            self.progressHUB.removeFromSuperview()
             if success {
                 self.present(MainTabVC(), animated: true, completion: nil)
             }else{
-                //print("OOPS: \(error)")
-                print("OOPS: ")
+                errorAlertVC.dialogMessage = NSLocalizedString("Looks like an error has occured, please try again later.", comment: "--")
+                self.present(errorAlertVC, animated: true, completion: nil)
             }
         }
     }

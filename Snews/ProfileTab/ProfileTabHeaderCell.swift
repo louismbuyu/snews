@@ -47,21 +47,18 @@ class ProfileTabHeaderCell: UITableViewCell {
         
         self.addSubview(profileImage)
         profileImage.centerYAnchor.constraint(equalTo: self.centerYAnchor, constant: 0).isActive = true
-        //profileImage.topAnchor.constraint(equalTo: self.topAnchor, constant: TOP_CONSTANT).isActive = true
         profileImage.leftAnchor.constraint(equalTo: self.leftAnchor, constant: LEFT_CONSTANT).isActive = true
         profileImage.widthAnchor.constraint(equalToConstant: 60).isActive = true
         profileImage.heightAnchor.constraint(equalToConstant: 60).isActive = true
         
         self.addSubview(profileNameLbl)
         profileNameLbl.bottomAnchor.constraint(equalTo: self.centerYAnchor, constant: -4).isActive = true
-        //profileNameLbl.topAnchor.constraint(equalTo: self.topAnchor, constant: TOP_CONSTANT).isActive = true
         profileNameLbl.leftAnchor.constraint(equalTo: self.profileImage.rightAnchor, constant: LEFT_CONSTANT).isActive = true
         profileNameLbl.rightAnchor.constraint(equalTo: self.rightAnchor, constant: RIGHT_CONSTANT).isActive = true
         profileNameLbl.heightAnchor.constraint(equalToConstant: 40)
         
         self.addSubview(titleLbl)
         titleLbl.topAnchor.constraint(equalTo: self.centerYAnchor, constant: 4).isActive = true
-        //titleLbl.topAnchor.constraint(equalTo: self.profileNameLbl.bottomAnchor, constant: 4).isActive = true
         titleLbl.leftAnchor.constraint(equalTo: self.profileImage.rightAnchor, constant: LEFT_CONSTANT).isActive = true
         titleLbl.rightAnchor.constraint(equalTo: self.rightAnchor, constant: RIGHT_CONSTANT).isActive = true
         titleLbl.heightAnchor.constraint(equalToConstant: 40)

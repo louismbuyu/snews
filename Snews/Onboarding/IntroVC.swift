@@ -315,11 +315,15 @@ class IntroVC: UIViewController {
     }
     
     @objc func signInAction(){
-        self.present(LoginVC(), animated: true, completion: nil)
+        let nextVC = LoginVC()
+        nextVC.modalPresentationStyle = .overCurrentContext
+        self.present(nextVC, animated: true, completion: nil)
     }
     
     @objc func signUpAction(){
-        self.present(SignUpVC(), animated: true, completion: nil)
+        let nextVC = SignUpVC()
+        nextVC.modalPresentationStyle = .overCurrentContext
+        self.present(nextVC, animated: true, completion: nil)
     }
     
     

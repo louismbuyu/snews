@@ -26,7 +26,7 @@ class SearchUsersTVC: UITableViewController, UISearchBarDelegate, UISearchContro
             superView.removeFromSuperview()
         }
     }
-    var progressHUB = ProgressHUD(text: "Loading...")
+    var progressHUB = ProgressHUD(text: NSLocalizedString("Sending...", comment: "--"))
     override func viewDidLoad() {
         super.viewDidLoad()
         userId = AuthService.instance.userId
@@ -39,7 +39,6 @@ class SearchUsersTVC: UITableViewController, UISearchBarDelegate, UISearchContro
         
         self.searchController.searchBar.frame = CGRect(x: self.searchController.searchBar.frame.origin.x, y: self.searchController.searchBar.frame.origin.y, width: self.searchController.searchBar.frame.size.width, height: 44.0)
         self.tableView.tableHeaderView = self.searchController.searchBar
-        //self.searchController.searchBar.scopeButtonTitles = scopeButtonTitles
         self.searchController.searchBar.delegate = self
         
         self.tableView.tableFooterView = UIView()
@@ -47,25 +46,7 @@ class SearchUsersTVC: UITableViewController, UISearchBarDelegate, UISearchContro
         tableView.register(SearchUsersCell.self, forCellReuseIdentifier: "cell")
     }
     
-    override func viewDidAppear(_ animated: Bool) {
-        /*let body : [String: Any] = ["text": "searchController.searchBar.text"]
-         FullTextSearchService.instance.postUniversitySearch(body: body) { (success, error, msg, universities) in
-         
-         if success {
-         if let unis = universities {
-         for uni in unis {
-         print(uni.name)
-         }
-         }
-         //self.tableView.reloadData()
-         }else{
-         print(error)
-         }
-         }*/
-    }
-    
     override func numberOfSections(in tableView: UITableView) -> Int {
-        // #warning Incomplete implementation, return the number of sections
         return 1
     }
     
@@ -75,31 +56,13 @@ class SearchUsersTVC: UITableViewController, UISearchBarDelegate, UISearchContro
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath) as! SearchUsersCell
-        //let selectedScopeButtonIndex = self.searchController.searchBar.selectedScopeButtonIndex
+        
         if let urlString = users[indexPath.row].imageUrl {
             let url = URL(string: urlString)
             cell.profileImage.af_setImage(withURL: url!)
         }
         cell.mainLbl.text = users[indexPath.row].displayName
         cell.subLbl.text = users[indexPath.row].username
-        
-        /*if self.searchController.isActive {
-         if let urlString = users[indexPath.row].profileImageUrl {
-         let url = URL(string: urlString)
-         cell.profileImage.af_setImage(withURL: url!)
-         }
-         cell.mainLbl.text = users[indexPath.row].firstName
-         cell.subLbl.text = users[indexPath.row].username
-         cell.followButton.setTitle("follow", for: UIControlState.normal)
-         }else {
-         if let urlString = users[indexPath.row].profileImageUrl {
-         let url = URL(string: urlString)
-         cell.profileImage.af_setImage(withURL: url!)
-         }
-         cell.mainLbl.text = users[indexPath.row].firstName
-         cell.subLbl.text = users[indexPath.row].username
-         cell.followButton.setTitle("follow", for: UIControlState.normal)
-         }*/
         
         cell.preservesSuperviewLayoutMargins = false
         cell.separatorInset = UIEdgeInsets.zero
@@ -150,10 +113,29 @@ class SearchUsersTVC: UITableViewController, UISearchBarDelegate, UISearchContro
     
     
     func shareMessage(receiverId: String){
+        self.view.addSubview(progressHUB)
+        let nextVC = CustomAlert()
+        nextVC.modalPresentationStyle = .overFullScreen
+        nextVC.modalTransitionStyle = UIModalTransitionStyle.crossDissolve
         MessageService.instance.shareArticle(senderId: userId!, receiverId: receiverId, articleId: (article?.id)!) { (success, error, message) in
+            self.progressHUB.removeFromSuperview()
             if success {
-                self.navigationController?.popViewController(animated: true)
+                nextVC.actionCallback = { (view) in
+                    view.dismiss(animated: true, completion: nil)
+                    self.navigationController?.popViewController(animated: true)
+                }
+                nextVC.dialogTitle = NSLocalizedString("Success", comment: "--")
+                nextVC.dialogMessage = NSLocalizedString("You have successfully shared this article!", comment: "--")
+                nextVC.dialogImage = UIImage(named: "success")
+            }else{
+                nextVC.actionCallback = { (view) in
+                    view.dismiss(animated: true, completion: nil)
+                }
+                nextVC.dialogTitle = NSLocalizedString("Oops", comment: "--")
+                nextVC.dialogMessage = NSLocalizedString("Looks like an error has occured, please try again later.", comment: "--")
+                nextVC.dialogImage = UIImage(named: "error")
             }
+            self.present(nextVC, animated: true, completion: nil)
         }
     }
     

@@ -18,6 +18,7 @@ class ProfileTVC: UITableViewController, UIActionSheetDelegate, UINavigationCont
     var username: String?
     var displayName: String?
     var editModeActive = false
+    var progressHUB = ProgressHUD(text: NSLocalizedString("Updating...", comment: "--"))
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -87,7 +88,6 @@ class ProfileTVC: UITableViewController, UIActionSheetDelegate, UINavigationCont
         case 0:
             switch indexPath.row {
             case 0:
-                print("0")
                 imageAction()
             case 1:
                 print("nope")
@@ -122,10 +122,8 @@ class ProfileTVC: UITableViewController, UIActionSheetDelegate, UINavigationCont
     }
     
     func getTheImage(type: Int){
-        
         let imagePickerController = UIImagePickerController()
         imagePickerController.delegate = self
-        
         if type == 0 {
             imagePickerController.sourceType = UIImagePickerControllerSourceType.camera
         }else{
@@ -144,9 +142,17 @@ class ProfileTVC: UITableViewController, UIActionSheetDelegate, UINavigationCont
             self.profileImageCell.hasValue = true
             picker.dismiss(animated: true, completion: nil)
         }else{
-            print("Error!!!!!!!!!")
+            let errorAlertVC = CustomAlert()
+            errorAlertVC.modalPresentationStyle = .overFullScreen
+            errorAlertVC.modalTransitionStyle = UIModalTransitionStyle.crossDissolve
+            errorAlertVC.actionCallback = { (view) in
+                view.dismiss(animated: true, completion: nil)
+            }
+            errorAlertVC.dialogTitle = NSLocalizedString("Oops", comment: "--")
+            errorAlertVC.dialogImage = UIImage(named: "error")
+            errorAlertVC.dialogMessage = NSLocalizedString("Looks like an error has occured, please try again later.", comment: "--")
+            self.present(errorAlertVC, animated: true, completion: nil)
         }
-        //self.tableView.reloadData()
     }
     
     func updateProfile(){
@@ -155,12 +161,26 @@ class ProfileTVC: UITableViewController, UIActionSheetDelegate, UINavigationCont
             if self.displayNameCell.hasValue {
                 displayN = self.displayNameCell.valueLbl.text!
             }
-            
+            self.view.addSubview(progressHUB)
+            let customAlert = CustomAlert()
+            customAlert.modalPresentationStyle = .overFullScreen
+            customAlert.modalTransitionStyle = UIModalTransitionStyle.crossDissolve
+            customAlert.actionCallback = { (view) in
+                view.dismiss(animated: true, completion: nil)
+                self.navigationController!.popViewController(animated: true)
+            }
             UserService.instance.updateProfile(userId: AuthService.instance.userId,displayName: displayN, newImage: self.profileImageCell.hasValue, image: self.profileImageCell.profileImage.image) { (success, error, message) in
+                self.progressHUB.removeFromSuperview()
                 if success {
-                    self.navigationController!.popViewController(animated: true)
+                    customAlert.dialogTitle = NSLocalizedString("Success", comment: "--")
+                    customAlert.dialogImage = UIImage(named: "success")
+                    customAlert.dialogMessage = NSLocalizedString("Your profile was successfully updated!", comment: "--")
+                    self.present(customAlert, animated: true, completion: nil)
                 }else{
-                    print("Error: \(error?.localizedDescription)")
+                    customAlert.dialogTitle = NSLocalizedString("Oops", comment: "--")
+                    customAlert.dialogImage = UIImage(named: "error")
+                    customAlert.dialogMessage = NSLocalizedString("Looks like an error has occured, please try again later.", comment: "--")
+                    self.present(customAlert, animated: true, completion: nil)
                 }
             }
         }else{
@@ -169,27 +189,18 @@ class ProfileTVC: UITableViewController, UIActionSheetDelegate, UINavigationCont
     }
     
     func imageAction(){
-        
-        //Create the AlertController and add Its action like button in Actionsheet
-        let actionSheetControllerIOS8: UIAlertController = UIAlertController(title: NSLocalizedString("Select Profile Image", comment: "--"), message: NSLocalizedString("Select Profile Image", comment: "--"), preferredStyle: .actionSheet)
+        let actionSheetController: UIAlertController = UIAlertController(title: NSLocalizedString("Select Profile Image", comment: "--"), message: NSLocalizedString("Select Profile Image", comment: "--"), preferredStyle: .actionSheet)
         
         let cancelActionButton: UIAlertAction = UIAlertAction(title: NSLocalizedString("Cancel", comment: "--"), style: .cancel) { void in
             print("Cancel")
         }
-        actionSheetControllerIOS8.addAction(cancelActionButton)
-        
-        /*let saveActionButton: UIAlertAction = UIAlertAction(title: NSLocalizedString("Camera", comment: "--"), style: .default)
-        { void in
-            self.getTheImage(type: 0)
-        }
-        actionSheetControllerIOS8.addAction(saveActionButton)*/
-        
+        actionSheetController.addAction(cancelActionButton)
         let deleteActionButton: UIAlertAction = UIAlertAction(title: NSLocalizedString("Camera Roll", comment: "--"), style: .default)
         { void in
             self.getTheImage(type: 1)
         }
-        actionSheetControllerIOS8.addAction(deleteActionButton)
-        self.present(actionSheetControllerIOS8, animated: true, completion: nil)
+        actionSheetController.addAction(deleteActionButton)
+        self.present(actionSheetController, animated: true, completion: nil)
     }
     
 }

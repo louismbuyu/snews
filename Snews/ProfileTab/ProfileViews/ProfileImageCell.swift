@@ -33,7 +33,8 @@ class ProfileImageCell: UITableViewCell {
         profileImage.topAnchor.constraint(equalTo: self.topAnchor, constant: 0).isActive = true
         profileImage.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 0).isActive = true
         profileImage.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: 0).isActive = true
-        profileImage.heightAnchor.constraint(lessThanOrEqualToConstant: 1000).isActive = true
+        let screenWidth = UIScreen.main.bounds.width
+        profileImage.heightAnchor.constraint(equalToConstant: screenWidth).isActive = true
         profileImage.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: 0).isActive = true
         hasValue = false
     }

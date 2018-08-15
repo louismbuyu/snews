@@ -12,6 +12,9 @@
 "Settings" = "Settings";
 "Cancel" = "Cancel";
 "Users" = "Users";
+"Success" = "Success";
+"Oops" = "Oops";
+"Okay" = "Okay";
 
 // MARK: - Onboarding Variables
 "SORT" = "SORT";
@@ -27,7 +30,9 @@
 
 // MARK: - Signup and Login Variables
 "SignUp" = "Sign up";
+"Signing up..." = "Signing up...";
 "LogIn" = "Log in";
+"Logging in..." = "Logging in...";
 "OrSignUpWith" = "Or sign up with";
 "OrLogInWith" = "Or log in with";
 "SignUpWithFacebook" = "Sign up with Facebook";
@@ -38,9 +43,18 @@
 "LogInTitle" = "Log in with your username";
 "SignUpPolicy" = "By clicking, Sign up, you agree to Snews User Agreement, Privacy Policy and Cookie Policy.";
 "EmailOrUsername" = "Email or Username";
+"Please enter a username" = "Please enter a username";
+"Please enter a password" = "Please enter a password";
 
 //MARK: - Profile Tab
 "View Profile" = "View Profile";
 "Display Name" = "Display Name";
 "Select Profile Image" = "Select Profile Image";
 "Camera Roll" = "Camera Roll";
+"Your profile was successfully updated!" = "Your profile was successfully updated!";
+"Updating..." = "Updating...";
+
+//MARK: - Articles Tab
+"You have successfully shared this article!" = "You have successfully shared this article!";
+"Looks like an error has occured, please try again later." = "Looks like an error has occured, please try again later.";
+"Sending..." = "Sending...";

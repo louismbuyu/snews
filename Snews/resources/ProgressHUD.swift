@@ -53,12 +53,12 @@ class ProgressHUD: UIVisualEffectView {
                                 width: width,
                                 height: height)
             vibrancyView.frame = self.bounds
+            vibrancyView.backgroundColor = UIColor.black
+            vibrancyView.alpha = 0.5
             
             let activityIndicatorSize: CGFloat = 40
-            activityIndictor.frame = CGRect(x: 5,
-                                            y: height / 2 - activityIndicatorSize / 2,
-                                            width: activityIndicatorSize,
-                                            height: activityIndicatorSize)
+            activityIndictor.frame = CGRect(x: 5,y: height / 2 - activityIndicatorSize / 2,width: activityIndicatorSize,height: activityIndicatorSize)
+            activityIndictor.color = UIColor.white
             
             layer.cornerRadius = 8.0
             layer.masksToBounds = true
@@ -68,7 +68,7 @@ class ProgressHUD: UIVisualEffectView {
                                  y: 0,
                                  width: width - activityIndicatorSize - 15,
                                  height: height)
-            label.textColor = UIColor.gray
+            label.textColor = UIColor.white
             label.font = UIFont.boldSystemFont(ofSize: 16)
         }
     }

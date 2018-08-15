@@ -133,20 +133,31 @@ class ArticleWebViewVC: UIViewController {
         self.shareButton.widthAnchor.constraint(equalToConstant: 30).isActive = true
         self.shareButton.heightAnchor.constraint(equalToConstant: 30).isActive = true
         
-        progressHUB.show()
-        
+        self.view.addSubview(progressHUB)
         let url = URL(string: (article?.url)!)
         if let unwrappedURL = url {
             let request = URLRequest(url: unwrappedURL)
             let session = URLSession.shared
             let task = session.dataTask(with: request){ (data,response,error) in
-                self.progressHUB.hide()
                 if error == nil{
-                    DispatchQueue.main.async { // Correct
+                    DispatchQueue.main.async {
+                        self.progressHUB.removeFromSuperview()
                         self.webView.loadRequest(request)
                     }
                 }else{
-                    print("Error: \(error?.localizedDescription)")
+                    DispatchQueue.main.async {
+                        self.progressHUB.removeFromSuperview()
+                        let errorAlertVC = CustomAlert()
+                        errorAlertVC.modalPresentationStyle = .overFullScreen
+                        errorAlertVC.modalTransitionStyle = UIModalTransitionStyle.crossDissolve
+                        errorAlertVC.actionCallback = { (view) in
+                            view.dismiss(animated: true, completion: nil)
+                        }
+                        errorAlertVC.dialogTitle = NSLocalizedString("Oops", comment: "--")
+                        errorAlertVC.dialogImage = UIImage(named: "error")
+                        errorAlertVC.dialogMessage = NSLocalizedString("Looks like an error has occured, please try again later.", comment: "--")
+                        self.present(errorAlertVC, animated: true, completion: nil)
+                    }
                 }
             }
             task.resume()
@@ -169,7 +180,9 @@ class ArticleWebViewVC: UIViewController {
     }
     
     @objc func shareAction(_ sender: UIButton){
-        
+        let nextVC = SearchUsersTVC()
+        nextVC.article = self.article
+        self.navigationController?.pushViewController(nextVC, animated: true)
     }
 
 }
