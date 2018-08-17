@@ -2,6 +2,8 @@
 
 Snews app is an app that allows users to read and share news articles.
 
+![snewshome](https://user-images.githubusercontent.com/20932949/44247812-9a4d3c80-a1ac-11e8-9360-b86575ef06b7.png)
+
 # Features
 * Authentication - Login/Sign up
 * View articles from Crunchbase - Custom built web crawler built with Python Scrapy Library \*Adding more websites soon
