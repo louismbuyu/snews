@@ -149,6 +149,7 @@ class OnboardingVC: UIViewController, UICollectionViewDelegateFlowLayout, UIColl
             self.nextButton.backgroundColor = .white
             self.nextButton.setTitleColor(BLUE, for: .normal)
             self.nextButton.setTitle(NSLocalizedString("Next", comment: "--"), for: .normal)
+            self.nextButton.removeTarget(self, action: #selector(joinAction), for: .touchUpInside)
         }else{
             self.nextButton.backgroundColor = BLUE
             self.nextButton.setTitleColor(.white, for: .normal)

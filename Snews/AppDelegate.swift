@@ -23,7 +23,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         UITabBar.appearance().isTranslucent = false
         UITabBar.appearance().barTintColor = UIColor(red: 255/255.0, green: 255/255.0, blue: 255/255.0, alpha: 0.8)
-        //UITabBar.appearance().tintColor = UIColor(red: 33/255.0, green: 150/255.0, blue: 243/255.0, alpha: 1.0)
         
         UITabBar.appearance().tintColor = PRIMARY_COLOR
         window = UIWindow(frame: UIScreen.main.bounds)
