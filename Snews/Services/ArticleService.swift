@@ -15,7 +15,10 @@ class ArticleService {
     static let instance = ArticleService()
     
     func getArticles(completion: @escaping (_ success: Bool,_ error: Error? ,_ message: String?,_ articles: [Article]?) -> ()) {
-        Alamofire.request(URL_GET_ARTICLES, method: .get, parameters: nil, encoding: JSONEncoding.default, headers: HEADER).responseJSON { (response) in
+        let body: [String: Any] = [
+            "names": ["crunchbasenews"]
+        ]
+        Alamofire.request(URL_GET_ARTICLES, method: .post, parameters: body, encoding: JSONEncoding.default, headers: HEADER).responseJSON { (response) in
             if response.result.error == nil {
                 if let json = response.result.value as? Dictionary<String,Any> {
                     if let success = json["success"] as? Bool {
